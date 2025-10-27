@@ -1,22 +1,22 @@
 $(function () {
-  // =========================
-// 共通パーツ読み込み
 // =========================
-
-// ページ階層に応じてベースパスを決定
+// ページ階層に応じたベースパス設定
+// =========================
 const depth = location.pathname.split("/").filter(Boolean).length;
 const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
 
-// 読み込む共通パーツ一覧
+// =========================
+// 共通パーツ読み込み
+// =========================
 const parts = ["header", "contact", "footer", "toTop"];
 
 parts.forEach((part) => {
   fetch(`${basePath}partials/${part}.html`)
     .then((res) => res.text())
     .then((html) => {
-      // 画像・リンクの相対パス補正（#や絶対URLは除外）
+      // 相対パスを補正（画像・リンク両方）
       const adjustedHtml = html.replace(
-        /(src|href)="(?!https?:|mailto:|#)([^"]+)"/g,
+        /(src|href)="(?!https?:|mailto:)([^"]+)"/g,
         (match, attr, path) => `${attr}="${basePath}${path}"`
       );
 
@@ -24,15 +24,16 @@ parts.forEach((part) => {
       if (!target) return;
       target.innerHTML = adjustedHtml;
 
-      // 初期化関数
+      // パーツ読み込み後に初期化関数を実行
       if (part === "header") initHamburger();
       if (part === "toTop") initToTopBtn();
+      if (part === "contact") initContactLinks(); // #contactリンク初期化
     })
     .catch((err) => console.error(`Failed to load ${part}:`, err));
 });
 
 // =========================
-// ハンバーガーメニュー
+// ハンバーガーメニュー初期化
 // =========================
 function initHamburger() {
   $(".toggle-btn").on("click", function (e) {
@@ -52,7 +53,7 @@ function initHamburger() {
 }
 
 // =========================
-// トップへ戻るボタン
+// トップへ戻るボタン初期化
 // =========================
 function initToTopBtn() {
   const $btn = $("#toTopBtn");
@@ -72,18 +73,105 @@ function initToTopBtn() {
 }
 
 // =========================
-// お問い合わせリンク（共通）
+// #contactリンク初期化（スムーズスクロール）
 // =========================
-$(document).on("click", 'a[href="#contact"]', function (e) {
-  e.preventDefault();
+function initContactLinks() {
+  $(document).on("click", 'a[href="#contact"]', function (e) {
+    e.preventDefault();
+    const $target = $("#contact");
+    if ($target.length) {
+      const position = $target.offset().top;
+      $("html, body").animate({ scrollTop: position }, 600);
+    }
+  });
+}
 
-  const $target = $("#contact");
-  if ($target.length) {
-    // 同じページ内にある場合はスクロール
-    const position = $target.offset().top;
-    $("html, body").animate({ scrollTop: position }, 600);
-  }
-});
+  
+//   // =========================
+// // 共通パーツ読み込み
+// // =========================
+
+// // ページ階層に応じてベースパスを決定
+// const depth = location.pathname.split("/").filter(Boolean).length;
+// const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
+
+// // 読み込む共通パーツ一覧
+// const parts = ["header", "contact", "footer", "toTop"];
+
+// parts.forEach((part) => {
+//   fetch(`${basePath}partials/${part}.html`)
+//     .then((res) => res.text())
+//     .then((html) => {
+//       // 画像・リンクの相対パス補正（#や絶対URLは除外）
+//       const adjustedHtml = html.replace(
+//         /(src|href)="(?!https?:|mailto:|#)([^"]+)"/g,
+//         (match, attr, path) => `${attr}="${basePath}${path}"`
+//       );
+
+//       const target = document.getElementById(part);
+//       if (!target) return;
+//       target.innerHTML = adjustedHtml;
+
+//       // 初期化関数
+//       if (part === "header") initHamburger();
+//       if (part === "toTop") initToTopBtn();
+//     })
+//     .catch((err) => console.error(`Failed to load ${part}:`, err));
+// });
+
+// // =========================
+// // ハンバーガーメニュー
+// // =========================
+// function initHamburger() {
+//   $(".toggle-btn").on("click", function (e) {
+//     e.stopPropagation();
+//     $(this).toggleClass("open");
+//     $(".sp-menu").toggleClass("open");
+//     $("body").toggleClass("no-scroll");
+//   });
+
+//   $(document).on("click", function (e) {
+//     if (!$(e.target).closest(".sp-menu, .toggle-btn").length) {
+//       $(".sp-menu").removeClass("open");
+//       $(".toggle-btn").removeClass("open");
+//       $("body").removeClass("no-scroll");
+//     }
+//   });
+// }
+
+// // =========================
+// // トップへ戻るボタン
+// // =========================
+// function initToTopBtn() {
+//   const $btn = $("#toTopBtn");
+//   if ($btn.length === 0) return;
+
+//   $(window).on("scroll", function () {
+//     if ($(this).scrollTop() > 300) {
+//       $btn.addClass("show");
+//     } else {
+//       $btn.removeClass("show");
+//     }
+//   });
+
+//   $btn.on("click", function () {
+//     $("html, body").animate({ scrollTop: 0 }, 600);
+//   });
+// }
+
+// // =========================
+// // お問い合わせリンク（共通）
+// // =========================
+// $(document).on("click", 'a[href="#contact"]', function (e) {
+//   e.preventDefault();
+
+//   const $target = $("#contact");
+//   if ($target.length) {
+//     // 同じページ内にある場合はスクロール
+//     const position = $target.offset().top;
+//     $("html, body").animate({ scrollTop: position }, 600);
+//   }
+// });
 
   
 //   // ▼ 共通パーツ読み込みスクリプト ▼
