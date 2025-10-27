@@ -48,21 +48,21 @@ function initHeader() {
   });
 
   // #contactリンク スムーズスクロール（PC/SP共通）
-  $(document).on("click", 'a[href="#contact"]', function (e) {
-    e.preventDefault();
+$(document).on("click", 'a[href="#contact"]', function (e) {
+  e.preventDefault();
 
-    const $target = $("#contact");
-    if ($target.length) {
-      const position = $target.offset().top;
-      $("html, body").animate({ scrollTop: position }, 600);
+  const $target = $("#contact");
+  if ($target.length) {
+    const position = $target.offset().top;
+    $("html, body").animate({ scrollTop: position }, 600);
 
-      // SPメニューが開いていたら閉じる
-      $(".sp-menu").removeClass("open");
-      $(".toggle-btn").removeClass("open");
-      $("body").removeClass("no-scroll");
-    }
-  });
-}
+    // SPメニューが開いていたら閉じる
+    $(".sp-menu").removeClass("open");
+    $(".toggle-btn").removeClass("open");
+    $("body").removeClass("no-scroll");
+  }
+});
+
 
 // =========================
 // トップへ戻るボタン
