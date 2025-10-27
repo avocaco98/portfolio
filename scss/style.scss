@@ -1,0 +1,1690 @@
+$font-main: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+$font-en: 'Gabarito', sans-serif;
+$text-color: #333333;
+$white: #FDF8EF;
+$orange: #FF642E;
+$green: #37B568;
+$yellowgreen: #AEFBB3;
+
+@import './mixin';
+
+html {
+  width: 100%;
+
+  @include sp {
+    overflow-x: hidden;
+  }
+}
+
+body {
+  font-family: $font-main;
+  font-size: 16px; // 基本サイズ 
+  line-height: 1.8; // 180%（1.8倍） 
+  color: $text-color; // 文字色 
+  font-weight: 400;
+  letter-spacing: 0.05em; // 5%の字間 
+  background-image: url(../img/common/background.jpg);
+  background-repeat: repeat;
+  position: relative;
+  overflow-x: hidden;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+button {
+  background: none;
+}
+
+.en {
+  font-family: $font-en;
+}
+
+.wrapper {
+  width: 90%;
+  margin-inline: auto;
+  max-width: 1300px;
+}
+
+//header
+.header {
+
+  &__container {
+    width: 90%;
+    background-color: #fff;
+    border-radius: 0 0 80px 80px;
+    margin-inline: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+
+    @include sp {
+      display: none;
+      opacity: 0;
+    }
+  }
+
+  &__inner {
+    width: 90%;
+    display: flex;
+    margin-inline: auto;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 8px;
+
+
+    //ヘッダーロゴ
+    .header__logo {
+      display: inline-block;
+      width: 200px;
+    }
+
+    //ヘッダーナビゲーション
+    .header__nav {
+
+      .header__list {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        font-weight: 500;
+
+        @include sp {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .hover__bg {
+          position: relative;
+          display: inline-block;
+          padding: 0 3px;
+
+          background-image:
+            linear-gradient(to bottom,
+              transparent 55%,
+              rgba(174, 255, 120, 0.75) 60%,
+              rgba(174, 255, 120, 0.95) 90%),
+            radial-gradient(circle at 12% 75%,
+              rgba(174, 255, 120, 0.55) 0%,
+              transparent 65%),
+            radial-gradient(circle at 88% 65%,
+              rgba(174, 255, 120, 0.5) 0%,
+              transparent 65%);
+
+          background-size: 0% 100%, 0% 100%, 0% 100%;
+          background-repeat: no-repeat;
+          transition: background-size 0.35s cubic-bezier(.25, .46, .45, .94);
+          border-radius: 2px;
+        }
+
+        .hover__bg:hover {
+          background-size: 105% 100%, 130% 100%, 130% 100%;
+        }
+
+      }
+
+    }
+
+
+    .header__item__contact a {
+      font-size: 18px;
+      color: $orange;
+      padding: 15px 25px;
+      border: $orange solid 0.5px;
+      border-radius: 50px;
+      transition: all 0.5s ease;
+      cursor: pointer;
+
+      @include sp {
+        background-color: #FDF8EF;
+        padding: 4px 18px;
+      }
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+      }
+    }
+  }
+}
+
+
+
+// sp-menu
+.sp-menu {
+  width: 75%;
+  height: 80vh;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  background-color: #37B568;
+  border-radius: 0 0 0 30px;
+  z-index: 50;
+  transition: right 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &.open {
+    right: 0;
+  }
+
+  &__nav {
+    position: absolute;
+    top: 20%;
+    right: 25%;
+    z-index: 50;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    color: #fff;
+    font-weight: 500;
+
+    .item__contact a {
+      background-color: #fff;
+      color: $orange;
+      padding: 10px 20px;
+      border: 0.5px solid $orange;
+      border-radius: 50px;
+    }
+  }
+
+  // logo
+  &__bottom {
+    width: 120px;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+
+.toggle-btn {
+  display: none;
+
+  @include sp {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    border-radius: 0 0 0 20px;
+    padding: 20px 15px 0 20px;
+    z-index: 100;
+    cursor: pointer;
+    transition: all .5s;
+
+    &__inner {
+      width: 40px;
+      height: 60px;
+      text-align: center;
+      position: relative;
+    }
+
+    span {
+      width: 100%;
+      height: 3px;
+      background-color: #37B568;
+      position: absolute;
+      left: 0;
+      transition: all 0.5s ease;
+      border-radius: 10px;
+
+      &:nth-child(1) {
+        top: 0;
+      }
+
+      &:nth-child(2) {
+        top: 15%;
+      }
+
+      &:nth-child(3) {
+        top: 30%;
+      }
+    }
+
+    .menu {
+      position: absolute;
+      bottom: 10px;
+      font-size: 14px;
+      color: #37B568;
+    }
+
+    &.open {
+      background-color: $green;
+
+      span {
+        background-color: #fff;
+
+        &:nth-child(1) {
+          top: 15%;
+          transform: rotate(45deg);
+        }
+
+        &:nth-child(2) {
+          opacity: 0;
+        }
+
+        &:nth-child(3) {
+          top: 15%;
+          transform: rotate(-45deg);
+        }
+      }
+
+      .menu {
+        color: #fff;
+      }
+    }
+  }
+}
+
+
+//FV
+.fv {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .fv__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .fv__logo__text {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 120%;
+    letter-spacing: 0.1em;
+    text-align: right;
+    color: $green;
+
+    @include sp {
+      font-size: 28px;
+    }
+  }
+
+  .fv__logo__icon {
+    display: flex;
+
+    .icon {
+      height: 90px;
+      animation: bounce-rotate 3s ease-in-out infinite;
+      transform-origin: center bottom;
+
+      @include sp {
+        height: 60px;
+      }
+
+      &:nth-child(1) {
+        animation-delay: 0s;
+        --tilt: -10deg;
+      }
+
+      &:nth-child(2) {
+        animation-delay: 0.4s;
+        --tilt: 13deg;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 0.8s;
+        --tilt: -7deg;
+      }
+    }
+  }
+}
+
+/* ← @keyframes はルート階層に！ */
+@keyframes bounce-rotate {
+
+  0%,
+  20%,
+  70%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  5% {
+    transform: translateY(-20px) rotate(var(--tilt));
+  }
+
+  10% {
+    transform: translateY(0) rotate(calc(var(--tilt) * -0.5));
+  }
+
+  // 50% {
+  //   transform: translateY(-8px) rotate(calc(var(--tilt) * 0.3));
+  // }
+}
+
+
+/*====== スクロールアニメ ======*/
+.scrolldown1 {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 50px;
+
+  span {
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    color: $green;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 30px;
+    background: $green;
+    animation: pathmove 1.4s ease-in-out infinite;
+    opacity: 0;
+  }
+}
+
+/* 縦線アニメーションもルートに出す */
+@keyframes pathmove {
+  0% {
+    height: 0;
+    top: 0;
+    opacity: 0;
+  }
+
+  30% {
+    height: 30px;
+    opacity: 1;
+  }
+
+  100% {
+    height: 0;
+    top: 50px;
+    opacity: 0;
+  }
+}
+
+
+//message
+.message {
+  width: 100%;
+  display: flex;
+  gap: 60px;
+  background-color: $green;
+  align-items: center;
+  justify-content: center;
+  padding-block: 100px;
+
+  @include sp {
+    flex-direction: column;
+    position: relative;
+  }
+
+  &__logo-box {
+    width: 50%;
+    margin-left: 10%;
+    position: relative;
+
+    @include sp {
+      width: 45%;
+      position: absolute;
+      top: 80px;
+      right: 0;
+    }
+
+    .message__icon {
+      width: 170px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(0) translateY(-50%);
+
+      @include sp {
+        width: 60px;
+      }
+    }
+
+    /* .animate が付いたときにスルスル横並びアニメーション開始 */
+    .message__icon.animate {
+      animation: slideRight 1.8s ease forwards;
+    }
+  }
+
+  @keyframes slideRight {
+    0% {
+      transform: translateX(0) translateY(-50%);
+    }
+
+    100% {
+      transform: translateX(var(--x, 0)) translateY(-50%);
+    }
+  }
+
+  /* アニメーション終了位置を個別に設定 */
+  .message__icon1 {
+    --x: 0px;
+  }
+
+  .message__icon2 {
+    --x: 95%;
+  }
+
+  .message__icon3 {
+    --x: 190%;
+  }
+
+  &__content {
+    width: 80%;
+
+    @include sp {
+      width: 100%;
+    }
+
+    .message__title {
+      color: $white;
+      font-size: 28px;
+      font-weight: bold;
+      line-height: 1.8em;
+      margin-left: 60px;
+
+      @include sp {
+        margin-left: 10%;
+        font-size: 20px;
+      }
+
+      &__highlight {
+        font-size: 38px;
+        margin-inline: 8px;
+
+        @include sp {
+          font-size: 30px;
+          margin-inline: 4px;
+        }
+      }
+    }
+
+    .message__text {
+      background-image: url(../img/top/message_bsckground.jpg);
+      background-repeat: repeat;
+      padding: 30px 60px;
+      margin-top: 40px;
+      border-radius: 30px 0 0 30px;
+      color: $green;
+
+      .pc-message {
+        display: block;
+
+        @include sp {
+          display: none;
+        }
+      }
+
+      .sp-message {
+        display: none;
+
+        @include sp {
+          display: block;
+          margin-left: 10px;
+        }
+
+      }
+
+      p+p {
+        margin-top: 20px;
+      }
+
+      &__highlight {
+        font-weight: 600;
+      }
+
+      @include sp {
+        margin-left: 10%;
+        padding: 20px 10px;
+      }
+    }
+  }
+}
+
+//strengths
+.strengths {
+  display: flex;
+  justify-content: space-between;
+
+  @include sp {
+    width: 100%;
+    flex-direction: column;
+    margin-block: 60px 120px;
+  }
+
+  .sticky__title {
+    position: relative;
+  }
+
+  &__title {
+    display: inline-block;
+    margin-block: 200px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 300px;
+    background: linear-gradient(transparent 35%,
+        /* 少し上から色を開始 */
+        rgba(174, 251, 179, 0.8) 35%,
+        rgba(174, 251, 179, 0.8) 60%,
+        /* 色の範囲を指定 */
+        transparent 80%);
+
+    @include sp {
+      position: static; // stickyを解除
+      margin-block: 0; // 上下余白をリセット
+      margin-left: 5%;
+      font-size: 20px;
+    }
+  }
+
+  &__items {
+    width: 60%;
+    margin-top: 200px;
+
+    @include sp {
+      margin-top: 40px;
+      width: 100%;
+    }
+  }
+
+  &__item {
+    width: 705px;
+    height: 500px;
+    display: inline-flex;
+    background-image: url(../img/top/strengths_item1.png);
+    background-size: cover;
+    color: $white;
+
+    @include sp {
+      width: 100%;
+      height: 400px;
+      background-position: center;
+    }
+
+    &__inner {
+      height: 100%;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-inline: auto;
+
+      @include sp {
+        width: 85%;
+      }
+
+      .strengths__item__title {
+        font-size: 24px;
+        letter-spacing: 0.1em;
+
+        @include sp {
+          font-size: 20px;
+        }
+
+        span {
+          font-size: 22px;
+
+          @include sp {
+            font-size: 18px;
+          }
+        }
+      }
+
+      .strengths__item__text {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  //固定させるやつ
+  .sticky__title,
+  .sticky1,
+  .sticky2,
+  .sticky3 {
+    position: -webkit-sticky; //これ入れないとsafariで機能しない
+    position: sticky;
+    top: 100px;
+    margin-block: 200px;
+
+    @include sp {
+      margin-block: 0;
+    }
+  }
+
+  .sticky2 {
+    background-image: url(../img/top/strengths_item2.png);
+    transform: translateX(-40px);
+
+    @include sp {
+      transform: translateX(0);
+      margin-block: 40px;
+    }
+  }
+
+  .sticky3 {
+    transform: translateX(-80px);
+
+    @include sp {
+      transform: translateX(0);
+    }
+  }
+}
+
+//works
+.top-works {
+  position: relative;
+  background-color: $green;
+  color: $white;
+  border-radius: 50px;
+  padding: 40px 0 80px;
+
+  @include sp {
+    border-radius: 20px;
+  }
+
+  &__title {
+    font-size: 18px;
+    margin-top: 60px;
+    display: inline-block;
+
+    @include sp {
+      margin-top: 20px;
+    }
+  }
+
+  &__title__sub {
+    position: absolute;
+    top: 0;
+    right: 5%;
+    font-size: 120px;
+    opacity: 0.5;
+    color: $yellowgreen;
+    font-weight: 700;
+
+    @include sp {
+      font-size: 70px;
+    }
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10% 5%;
+    margin-top: 100px;
+    margin-bottom: 80px;
+
+    @include sp {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 35px;
+      margin-block: 50px;
+    }
+  }
+
+  &__item {
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &::after {
+      content: "↗︎";
+      position: absolute;
+      right: 20px;
+      bottom: -4px;
+      opacity: 0;
+      transform: translate(-8px, 8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      font-size: 20px;
+      color: $white;
+    }
+
+    &:hover::after {
+      opacity: 1;
+      transform: translate(0);
+    }
+
+    &__thumbnail img {
+      display: inline-block;
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &__title {
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+
+      &__category {
+        border: $white 0.5px solid;
+        border-radius: 50px;
+        padding: 0 12px 0 14px;
+        font-weight: 500;
+        margin-right: 16px;
+      }
+    }
+  }
+
+
+  &__button__more {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+
+    @include sp {
+      text-align: center;
+      margin-inline: auto;
+    }
+
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -10px; // テキストとの距離
+      width: 100%;
+      height: 12px; // 波線画像の高さ
+      background-image: url("../img/top/wave_underbar.png");
+      background-repeat: no-repeat;
+      background-size: 100% auto;
+      opacity: 0; // 初期は非表示
+      transition: opacity 0.4s ease, transform 0.4s ease;
+
+      @include sp {
+        display: none;
+        opacity: 0;
+      }
+    }
+
+
+    &:hover::after {
+      opacity: 1; // フェードイン
+    }
+  }
+
+}
+
+//skills
+.skills {
+  margin-top: 80px;
+
+  .skills__title {
+    font-size: 18px;
+  }
+
+  .text-animation__container {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .text-animation__inner {
+      display: flex;
+      gap: 30px;
+
+      animation: loop-text 40s linear infinite;
+
+
+      .text-animation__item {
+        display: inline-block;
+        font-size: 120px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: $yellowgreen;
+        opacity: 0.6;
+        white-space: nowrap;
+
+        @include sp {
+          font-size: 80px;
+        }
+      }
+    }
+
+    @keyframes loop-text {
+      0% {
+        transform: translateX(0%);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  }
+
+  .skills__container {
+    width: 100%;
+    margin-block: 60px 80px;
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include sp {
+      width: 90%;
+      flex-direction: column;
+      margin-block: 30px 40px;
+      margin-inline: auto;
+      justify-content: center;
+      gap: 30px;
+    }
+
+
+    &__image {
+      width: 400px;
+
+      @include sp {
+        width: 80%;
+      }
+    }
+
+    &__items {
+      display: inline-block;
+      width: 60%;
+
+      @include sp {
+        width: 90%;
+      }
+
+      .skills__container__item {
+        display: flex;
+        gap: 40px;
+        flex: 0 0 auto;
+
+        @include sp {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        &__title p {
+          width: 120px;
+          font-size: 18px;
+          font-weight: 500;
+          text-align: center;
+          line-height: 1;
+          margin: 0;
+          background-color: $yellowgreen;
+          padding-block: 8px 10px;
+          border: #333333 solid 0.5px;
+          border-radius: 50px;
+
+          @include sp {
+            padding-block: 7px;
+          }
+        }
+      }
+
+      li+li {
+        width: 100%;
+        margin-top: 35px;
+      }
+    }
+  }
+}
+
+//contact
+.contact {
+  width: 100%;
+  min-height: 630px;
+  margin-top: 160px;
+  padding-block: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../img/top/contact_bg.png);
+  background-size: cover;
+
+  @include sp {
+    height: auto;
+    margin-top: 80px;
+    padding-block: 100px;
+    background-image: url(../img/common/sp-contact_bg.png);
+  }
+
+
+  &__container {
+    display: inline-flex;
+    gap: 80px;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 100px 60px;
+    border-radius: 30px;
+
+    @include sp {
+      width: 90%;
+      flex-direction: column;
+      padding: 60px 0;
+      gap: 60px;
+    }
+
+    &__message {
+      @include sp {
+        width: 95%;
+        text-align: center;
+
+      }
+    }
+
+    &__mail {
+      position: relative;
+      font-size: 28px;
+      font-weight: 500;
+      color: $orange;
+      background-color: #fff;
+      padding: 15px 50px;
+      border: $orange solid 0.5px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+
+      @include sp {
+        position: relative;
+        font-size: 20px;
+        padding: 10px 30px;
+      }
+
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+      }
+
+      &::before {
+        content: " ＼ お気軽にどうぞ! ／ ";
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        letter-spacing: 0.1em;
+        pointer-events: none; // hover領域を邪魔しない
+        opacity: 0;
+        transition: all 0.3s ease;
+
+        @include sp {
+          width: 100%;
+          text-align: center;
+          opacity: 1;
+        }
+      }
+
+      &:hover::before {
+        opacity: 1;
+        color: $orange;
+      }
+    }
+  }
+}
+
+
+//footer
+.footer {
+  background-color: $green;
+  color: $white;
+  border-radius: 50px 50px 0 0;
+  padding-top: 50px;
+  margin-top: 80px;
+
+  @include sp {
+    padding-top: 30px;
+    border-radius: 30px 30px 0 0;
+  }
+
+  .footer__container {
+    display: flex;
+    justify-content: space-between;
+
+    @include sp {
+      flex-direction: column;
+      align-items: end;
+    }
+
+    .footer__logo {
+      &__image {
+        height: 60px;
+
+        @include sp {
+          height: 40px;
+        }
+      }
+    }
+
+    .footer__navi {
+      &__list {
+        display: flex;
+        gap: 20px;
+
+        @include sp {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .footer__bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-bottom: 8px;
+
+
+    &__line-pc {
+      opacity: 0.5;
+
+      @include sp {
+        display: none;
+      }
+    }
+
+    &__line-sp {
+      display: none;
+      opacity: 0;
+
+      @include sp {
+        width: 100%;
+        display: block;
+        opacity: 0.5;
+      }
+    }
+
+
+    &__rights {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+    }
+  }
+}
+
+
+//トップへ戻るボタン
+.toTop {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1); // 初期は通常サイズ
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 9999;
+
+  @include sp {
+    bottom: 4%;
+    right: 3%;
+  }
+
+
+  &__icon {
+    width: 50px;
+  }
+}
+
+/* 表示時 */
+.toTop.show {
+  opacity: 1;
+  visibility: visible;
+  animation: popIn 0.3s ease;
+  /* animation-fill-mode を削除して transform を元に戻す */
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ホバーアニメーション */
+.toTop:hover {
+  transform: scale(1.1); // さらに少し拡大
+}
+
+
+
+//aboutページ
+.about {
+  width: 100%;
+  padding-top: 150px;
+  margin-inline: auto;
+
+  @include sp {
+    width: 85%;
+    padding-top: 40px;
+  }
+
+  &__main {
+
+    &__title {
+      width: 70%;
+      font-size: 18px;
+      font-weight: 500;
+      margin-inline: auto;
+
+      @include sp {
+        display: inline-block;
+      }
+
+    }
+  }
+
+  &__top {
+    text-align: center;
+    position: relative;
+
+    @include sp {
+      margin-top: 60px;
+    }
+
+    &::after {
+      content: " ＼  はじめまして!  ／ ";
+      position: absolute;
+      top: 3%;
+      right: 35%;
+      font-size: 14px;
+      transform: rotate(35deg);
+
+      @include sp {
+        top: 2%;
+        right: 10%;
+      }
+    }
+
+    &__name {
+      display: inline-block;
+      margin-top: 25px;
+
+      @include sp {
+        margin-top: 16px;
+      }
+
+      .about__name {
+        font-size: 32px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+
+        @include sp {
+          font-size: 24px;
+        }
+      }
+    }
+
+    &__image {
+      width: 350px;
+      margin-inline: auto;
+
+      @include sp {
+        width: 60%;
+      }
+    }
+
+  }
+
+  &__profile {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 40px;
+
+    &__text {
+
+      &__highlight {
+        font-weight: 500;
+        position: relative;
+        background: linear-gradient(transparent 40%, rgba(174, 251, 179, 0.8) 40%);
+      }
+    }
+
+    .text-pc {
+
+      @include sp {
+        display: none;
+      }
+    }
+
+    .text-sp {
+      display: none;
+
+      @include sp {
+        display: inline-block;
+      }
+    }
+  }
+
+  &__bottom {
+    margin-block: 60px 30px;
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+
+    @include sp {
+      font-size: 14px;
+    }
+
+    &__line__left,
+    &__line__right {
+      width: 15px;
+      height: 1px;
+      background-color: #333333;
+    }
+
+    &__line__left {
+      transform: rotate(60deg);
+    }
+
+    &__line__right {
+      transform: rotate(-60deg);
+    }
+  }
+
+  &__more {
+    text-align: center;
+
+    &__btn {
+      display: inline-flex;
+      gap: 20px;
+      font-weight: 500;
+      padding: 6px 12px;
+      background-color: $yellowgreen;
+      border: 0.5px solid $text-color;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #357847;
+
+      &.pressed {
+        box-shadow: 0 0 #357847;
+        transform: translateY(4px);
+      }
+    }
+
+    &__message {
+      position: fixed;
+      top: -600px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 20px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 600px;
+      transition: top 0.4s ease;
+      text-align: left;
+      z-index: 100;
+
+      @include sp {
+        padding-top: 40px;
+        width: 85%;
+      }
+
+      &__title {
+        font-weight: 600;
+      }
+
+      ul {
+        margin: 0 0 12px 1em;
+        padding: 0;
+      }
+
+      li {
+        list-style: circle;
+        list-style-position: inside;
+        margin-left: 8px;
+      }
+
+      li+li {
+        margin-block: 4px;
+      }
+
+      .message__favorit {
+        margin-top: 40px;
+
+        // Spotifyプレイリスト
+        &__playlist {
+          display: inline-flex;
+          align-items: center;
+          font-size: 14px;
+          font-weight: 500;
+          padding: 2px 10px;
+          background-color: $yellowgreen;
+          border: $text-color solid 0.5px;
+          border-radius: 50px;
+          margin-left: 8px;
+
+          // Spotifyアイコン
+          .spotify__icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+
+      &.active {
+        top: 0;
+      }
+    }
+  }
+}
+
+
+//worksページ
+.works {
+  padding-top: 120px;
+  background-color: $green;
+  border-radius: 0 0 50px 50px;
+
+  @include sp {
+    padding-top: 60px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .top-works {
+    @include sp {
+      padding: 40px 0;
+    }
+  }
+
+  .top-works__items {
+    margin-top: 40px;
+  }
+}
+
+
+
+//work 個別ページ
+.work-single {
+  width: 100%;
+  padding-top: 160px;
+
+  @include sp {
+    padding-top: 80px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 500;
+    display: inline-block;
+    margin-left: 12px;
+
+    @include sp {
+      font-size: 18px;
+    }
+  }
+
+
+  // デザイントップ
+  &__top {
+    width: 100%;
+    background-image: url(../img/works/works_single_bg.png);
+    background-position: center;
+    background-size: cover;
+    border-radius: 20px;
+    padding: 40px 60px;
+    margin-top: 20px;
+
+    @include sp {
+      padding: 20px 0;
+      margin-top: 0;
+    }
+
+    .work-single__inner {
+      display: inline-flex;
+      align-items: end;
+      justify-content: center;
+      gap: 5%;
+
+      @include sp {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+    }
+
+
+    &__image {
+      width: 60%;
+
+      @include sp {
+        width: 100%;
+      }
+    }
+
+    .work-info {
+      width: 30%;
+
+      @include sp {
+        width: 100%;
+      }
+
+      &__title {
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 1.4em;
+      }
+
+      &__category {
+        display: inline-block;
+        background-color: $yellowgreen;
+        font-size: 14px;
+        padding: 2px 10px;
+        border: #333333 solid 0.5px;
+        border-radius: 30px;
+        margin-top: 12px;
+        margin-left: 10px;
+      }
+
+      &__sub {
+        display: inline-block;
+      }
+
+      &__url {
+        border: solid 1px $green;
+        border-radius: 30px;
+        color: $green;
+        font-weight: 600;
+        padding: 4px 12px;
+        margin-top: 20px;
+        transition: all 0.4s ease;
+
+        &:hover {
+          background-color: $green;
+          color: #fff;
+        }
+      }
+
+      &__list {
+        width: 100%;
+        margin-top: 30px;
+      }
+
+      &__label {
+        display: inline-block;
+        width: 45%;
+
+        @include sp {
+          width: 35%;
+        }
+      }
+
+      li+li {
+        margin-block: 14px;
+      }
+    }
+  }
+
+  // デザイン詳細
+  .work-detaile {
+    width: 90%;
+    margin-top: 60px;
+    margin-inline: auto;
+
+    @include sp {
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    &__item {
+      width: 100%;
+      display: inline-flex;
+
+      @include sp {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    &__label {
+      width: 30%;
+      font-size: 18px;
+      font-weight: 500;
+      margin-left: 8px;
+
+      @include sp {
+        font-size: 16px;
+        margin-left: 0;
+      }
+    }
+
+    &__value {
+      width: 100%;
+    }
+
+    li+li {
+      margin-block: 16px;
+    }
+
+    .work-detaile__design {
+      width: 100%;
+
+      li {
+        list-style: decimal;
+
+        &::marker {
+          font-weight: 500;
+          font-size: 20px;
+        }
+      }
+
+      .design__title {
+        font-size: 18px;
+        font-weight: 500;
+
+        @include sp {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  &__image {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+
+    @include sp {
+      flex-direction: column;
+    }
+
+    &__pc {
+      width: 70%;
+
+      @include sp {
+        display: none;
+      }
+    }
+
+    &__sp {
+      width: 25%;
+
+      @include sp {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.boab_maching__image {
+  display: block;
+  width: 30%;
+  margin-inline: auto;
+
+  @include sp {
+    width: 100%;
+  }
+}
+
+#backBtn {
+  width: 280px;
+  display: block;
+  margin-top: 80px;
+  margin-inline: auto;
+  padding: 4px 10px;
+  color: #37B568;
+  font-weight: 500;
+  text-align: center;
+  border: solid 0.5px $green;
+  border-radius: 30px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.4s ease;
+
+  @include sp {
+    width: 70%;
+  }
+
+  &:hover {
+    background-color: #37B568;
+    color: #fff;
+  }
+}
