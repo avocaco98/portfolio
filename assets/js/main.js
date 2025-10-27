@@ -66,6 +66,19 @@ $(function () {
   }
 
   // =========================
+// お問い合わせリンクのスムーススクロール
+// =========================
+$(document).on("click", 'a[href="#contact"]', function (e) {
+  e.preventDefault();
+
+  const $target = $("#contact");
+  if ($target.length) {
+    const position = $target.offset().top;
+    $("html, body").animate({ scrollTop: position }, 600);
+  }
+});
+
+  // =========================
   // トップへ戻るボタン
   // =========================
   function initToTopBtn() {
