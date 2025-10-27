@@ -47,36 +47,63 @@ $(function () {
     });
   }
 
-  // ▼ ハンバーガーメニュー初期化関数 ▼
-  function initHamburger() {
-    $(".toggle-btn").on("click", function (e) {
-      e.stopPropagation();
-      $(this).toggleClass("open");
-      $(".sp-menu").toggleClass("open");
-      $("body").toggleClass("no-scroll");
-    });
+  // // ▼ ハンバーガーメニュー初期化関数 ▼
+  // function initHamburger() {
+  //   $(".toggle-btn").on("click", function (e) {
+  //     e.stopPropagation();
+  //     $(this).toggleClass("open");
+  //     $(".sp-menu").toggleClass("open");
+  //     $("body").toggleClass("no-scroll");
+  //   });
 
-    $(document).on("click", function (e) {
-      if (!$(e.target).closest(".sp-menu, .toggle-btn").length) {
-        $(".sp-menu").removeClass("open");
-        $(".toggle-btn").removeClass("open");
-        $("body").removeClass("no-scroll");
-      }
-    });
-  }
+  //   $(document).on("click", function (e) {
+  //     if (!$(e.target).closest(".sp-menu, .toggle-btn").length) {
+  //       $(".sp-menu").removeClass("open");
+  //       $(".toggle-btn").removeClass("open");
+  //       $("body").removeClass("no-scroll");
+  //     }
+  //   });
+  // }
 
   // =========================
-// お問い合わせリンクのスムーススクロール
+// お問い合わせリンクの共通対応
 // =========================
 $(document).on("click", 'a[href="#contact"]', function (e) {
   e.preventDefault();
 
+  // ハンバーガーメニューが開いていたら閉じる
+  $(".sp-menu").removeClass("open");
+  $(".toggle-btn").removeClass("open");
+  $("body").removeClass("no-scroll");
+
+  const currentPath = location.pathname;
   const $target = $("#contact");
+
   if ($target.length) {
+    // 同一ページ内にある場合：スムーズスクロール
     const position = $target.offset().top;
     $("html, body").animate({ scrollTop: position }, 600);
+  } else {
+    // 他ページにいる場合：トップページへ#contact付きで遷移
+    const depth = currentPath.split("/").filter(Boolean).length;
+    const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
+    window.location.href = `${basePath}index.html#contact`;
   }
 });
+
+
+//   // =========================
+// // お問い合わせリンクのスムーススクロール
+// // =========================
+// $(document).on("click", 'a[href="#contact"]', function (e) {
+//   e.preventDefault();
+
+//   const $target = $("#contact");
+//   if ($target.length) {
+//     const position = $target.offset().top;
+//     $("html, body").animate({ scrollTop: position }, 600);
+//   }
+// });
 
   // =========================
   // トップへ戻るボタン
