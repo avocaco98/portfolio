@@ -65,31 +65,45 @@ $(function () {
   //   });
   // }
 
-  // =========================
-// お問い合わせリンクの共通対応
+  
+// =========================
+// お問い合わせリンク（共通）
 // =========================
 $(document).on("click", 'a[href="#contact"]', function (e) {
   e.preventDefault();
 
-  // ハンバーガーメニューが開いていたら閉じる
-  $(".sp-menu").removeClass("open");
-  $(".toggle-btn").removeClass("open");
-  $("body").removeClass("no-scroll");
-
-  const currentPath = location.pathname;
   const $target = $("#contact");
-
   if ($target.length) {
-    // 同一ページ内にある場合：スムーズスクロール
     const position = $target.offset().top;
     $("html, body").animate({ scrollTop: position }, 600);
-  } else {
-    // 他ページにいる場合：トップページへ#contact付きで遷移
-    const depth = currentPath.split("/").filter(Boolean).length;
-    const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
-    window.location.href = `${basePath}index.html#contact`;
   }
 });
+
+//   // =========================
+// // お問い合わせリンクの共通対応
+// // =========================
+// $(document).on("click", 'a[href="#contact"]', function (e) {
+//   e.preventDefault();
+
+//   // ハンバーガーメニューが開いていたら閉じる
+//   $(".sp-menu").removeClass("open");
+//   $(".toggle-btn").removeClass("open");
+//   $("body").removeClass("no-scroll");
+
+//   const currentPath = location.pathname;
+//   const $target = $("#contact");
+
+//   if ($target.length) {
+//     // 同一ページ内にある場合：スムーズスクロール
+//     const position = $target.offset().top;
+//     $("html, body").animate({ scrollTop: position }, 600);
+//   } else {
+//     // 他ページにいる場合：トップページへ#contact付きで遷移
+//     const depth = currentPath.split("/").filter(Boolean).length;
+//     const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
+//     window.location.href = `${basePath}index.html#contact`;
+//   }
+// });
 
 
 //   // =========================
