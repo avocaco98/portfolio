@@ -1,4 +1,5 @@
 $(function () {
+
   // =========================
   // 共通パーツ読み込み + 初期化
   // =========================
@@ -22,7 +23,7 @@ $(function () {
         if (!target) return;
         target.innerHTML = adjustedHtml;
 
-        // 読み込み後に初期化関数を呼ぶ
+        // 初期化関数
         if (part === "header") initHeader();
         if (part === "toTop") initToTopBtn();
       })
@@ -30,7 +31,7 @@ $(function () {
   });
 
   // =========================
-  // ヘッダー関連の初期化
+  // ヘッダー初期化（ハンバーガー + #contactリンク）
   // =========================
   function initHeader() {
     // ハンバーガーメニュー
@@ -52,7 +53,6 @@ $(function () {
     // #contactリンク スムーズスクロール（PC/SP共通）
     $(document).on("click", 'a[href="#contact"]', function (e) {
       e.preventDefault();
-
       const $target = $("#contact");
       if ($target.length) {
         const position = $target.offset().top;
@@ -87,9 +87,36 @@ $(function () {
   }
 
   // =========================
-  // メッセージロゴアニメーション
+  // 隠しメッセージのトグル
+  // =========================
+  $(".about__more__btn").on("click", function (e) {
+    e.stopPropagation();
+    $(".about__more__message").toggleClass("active");
+  });
+
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".about__more__message, .about__more__btn").length) {
+      $(".about__more__message").removeClass("active");
+    }
+  });
+
+  $("#backBtn").on("click", function () {
+    history.back();
+  });
+
+  $(".about__more__btn").on("touchstart mousedown", function () {
+    $(this).addClass("pressed");
+  });
+
+  $(".about__more__btn").on("touchend mouseup mouseleave", function () {
+    $(this).removeClass("pressed");
+  });
+
+  // =========================
+  // IntersectionObserverでロゴアニメーション
   // =========================
   const wrappers = document.querySelectorAll(".message__logo-box");
+
   const observer = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
@@ -103,32 +130,6 @@ $(function () {
     },
     { threshold: 0.3 }
   );
+
   wrappers.forEach((wrapper) => observer.observe(wrapper));
-
-  // =========================
-  // 隠しメッセージ（aboutページ）
-  // =========================
-  $(".about__more__btn").on("click", function (e) {
-    e.stopPropagation();
-    $(".about__more__message").toggleClass("active");
-  });
-
-  $(document).on("click", function (e) {
-    if (!$(e.target).closest(".about__more__message, .about__more__btn").length) {
-      $(".about__more__message").removeClass("active");
-    }
-  });
-
-  $(".about__more__btn").on("touchstart mousedown", function () {
-    $(this).addClass("pressed");
-  });
-
-  $(".about__more__btn").on("touchend mouseup mouseleave", function () {
-    $(this).removeClass("pressed");
-  });
-
-  // 戻るボタン
-  $("#backBtn").on("click", function () {
-    history.back();
-  });
 });
