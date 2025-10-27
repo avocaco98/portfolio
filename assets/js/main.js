@@ -1,135 +1,124 @@
 $(function () {
+  // =========================
+  // 共通パーツ読み込み + 初期化
+  // =========================
+  const pathParts = location.pathname.replace(/^\/+/, "").split("/").filter(Boolean);
+  const depth = pathParts.length;
+  const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
 
-// =========================
-// 共通パーツ読み込み + 初期化
-// =========================
-const depth = location.pathname.split("/").filter(Boolean).length;
-const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
-const parts = ["header", "contact", "footer", "toTop"];
+  const parts = ["header", "contact", "footer", "toTop"];
 
-parts.forEach((part) => {
-  fetch(`${basePath}partials/${part}.html`)
-    .then((res) => res.text())
-    .then((html) => {
-      // 画像・リンクの相対パス補正（#や絶対URLは除外）
-      const adjustedHtml = html.replace(
-        /(src|href)="(?!https?:|mailto:|#)([^"]+)"/g,
-        (match, attr, path) => `${attr}="${basePath}${path}"`
-      );
+  parts.forEach((part) => {
+    fetch(`${basePath}partials/${part}.html`)
+      .then((res) => res.text())
+      .then((html) => {
+        // 画像・リンクの相対パス補正（#や絶対URLは除外）
+        const adjustedHtml = html.replace(
+          /(src|href)="(?!https?:|mailto:|#)([^"]+)"/g,
+          (match, attr, path) => `${attr}="${basePath}${path}"`
+        );
 
-      const target = document.getElementById(part);
-      if (!target) return;
-      target.innerHTML = adjustedHtml;
+        const target = document.getElementById(part);
+        if (!target) return;
+        target.innerHTML = adjustedHtml;
 
-      // 読み込み後に初期化関数を呼ぶ
-      if (part === "header") initHeader();
-      if (part === "toTop") initToTopBtn();
-    })
-    .catch((err) => console.error(`Failed to load ${part}:`, err));
-});
-
-// =========================
-// ヘッダー関連の初期化（ハンバーガー + #contactリンク）
-// =========================
-function initHeader() {
-  // ハンバーガーメニュー
-  $(".toggle-btn").on("click", function (e) {
-    e.stopPropagation();
-    $(this).toggleClass("open");
-    $(".sp-menu").toggleClass("open");
-    $("body").toggleClass("no-scroll");
+        // 読み込み後に初期化関数を呼ぶ
+        if (part === "header") initHeader();
+        if (part === "toTop") initToTopBtn();
+      })
+      .catch((err) => console.error(`Failed to load ${part}:`, err));
   });
 
-  $(document).on("click", function (e) {
-    if (!$(e.target).closest(".sp-menu, .toggle-btn").length) {
-      $(".sp-menu").removeClass("open");
-      $(".toggle-btn").removeClass("open");
-      $("body").removeClass("no-scroll");
-    }
-  });
+  // =========================
+  // ヘッダー関連の初期化
+  // =========================
+  function initHeader() {
+    // ハンバーガーメニュー
+    $(".toggle-btn").on("click", function (e) {
+      e.stopPropagation();
+      $(this).toggleClass("open");
+      $(".sp-menu").toggleClass("open");
+      $("body").toggleClass("no-scroll");
+    });
 
-  // #contactリンク スムーズスクロール（PC/SP共通）
-  $(document).on("click", 'a[href="#contact"]', function (e) {
-    e.preventDefault();
+    $(document).on("click", function (e) {
+      if (!$(e.target).closest(".sp-menu, .toggle-btn").length) {
+        $(".sp-menu").removeClass("open");
+        $(".toggle-btn").removeClass("open");
+        $("body").removeClass("no-scroll");
+      }
+    });
 
-    const $target = $("#contact");
-    if ($target.length) {
-      const position = $target.offset().top;
-      $("html, body").animate({ scrollTop: position }, 600);
+    // #contactリンク スムーズスクロール（PC/SP共通）
+    $(document).on("click", 'a[href="#contact"]', function (e) {
+      e.preventDefault();
 
-      // SPメニューが開いていたら閉じる
-      $(".sp-menu").removeClass("open");
-      $(".toggle-btn").removeClass("open");
-      $("body").removeClass("no-scroll");
-    }
-  });
-}
+      const $target = $("#contact");
+      if ($target.length) {
+        const position = $target.offset().top;
+        $("html, body").animate({ scrollTop: position }, 600);
 
-// =========================
-// トップへ戻るボタン
-// =========================
-function initToTopBtn() {
-  const $btn = $("#toTopBtn");
-  if ($btn.length === 0) return;
+        // SPメニューが開いていたら閉じる
+        $(".sp-menu").removeClass("open");
+        $(".toggle-btn").removeClass("open");
+        $("body").removeClass("no-scroll");
+      }
+    });
+  }
 
-  $(window).on("scroll", function () {
-    if ($(this).scrollTop() > 300) {
-      $btn.addClass("show");
-    } else {
-      $btn.removeClass("show");
-    }
-  });
+  // =========================
+  // トップへ戻るボタン
+  // =========================
+  function initToTopBtn() {
+    const $btn = $("#toTopBtn");
+    if ($btn.length === 0) return;
 
-  $btn.on("click", function () {
-    $("html, body").animate({ scrollTop: 0 }, 600);
-  });
-}
+    $(window).on("scroll", function () {
+      if ($(this).scrollTop() > 300) {
+        $btn.addClass("show");
+      } else {
+        $btn.removeClass("show");
+      }
+    });
 
+    $btn.on("click", function () {
+      $("html, body").animate({ scrollTop: 0 }, 600);
+    });
+  }
 
-  // メッセージロゴのアニメーション
-  // 全ての box-wrapper を監視
+  // =========================
+  // メッセージロゴアニメーション
+  // =========================
   const wrappers = document.querySelectorAll(".message__logo-box");
-
   const observer = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // box-wrapper 内の box に .animate を付与
           entry.target.querySelectorAll(".message__icon").forEach((box) => {
             box.classList.add("animate");
           });
-          // 一度アニメーションしたら監視解除（リピートさせたくない場合）
           observer.unobserve(entry.target);
         }
       });
     },
-    {
-      threshold: 0.3, // 画面に30%見えたら発火
-    }
+    { threshold: 0.3 }
   );
-
-  // 監視スタート
   wrappers.forEach((wrapper) => observer.observe(wrapper));
 
-  // 隠しメッセージ
+  // =========================
+  // 隠しメッセージ（aboutページ）
+  // =========================
   $(".about__more__btn").on("click", function (e) {
     e.stopPropagation();
     $(".about__more__message").toggleClass("active");
   });
 
   $(document).on("click", function (e) {
-    if (
-      !$(e.target).closest(".about__more__message, .about__more__btn").length
-    ) {
+    if (!$(e.target).closest(".about__more__message, .about__more__btn").length) {
       $(".about__more__message").removeClass("active");
     }
   });
 
-  $("#backBtn").on("click", function () {
-    history.back();
-  });
-
-  //隠しメッセージのボタン
   $(".about__more__btn").on("touchstart mousedown", function () {
     $(this).addClass("pressed");
   });
@@ -138,4 +127,8 @@ function initToTopBtn() {
     $(this).removeClass("pressed");
   });
 
+  // 戻るボタン
+  $("#backBtn").on("click", function () {
+    history.back();
+  });
 });
