@@ -370,7 +370,6 @@ button {
 }
 @media screen and (max-width: 480px) {
   .message__logo-box {
-    width: 45%;
     position: absolute;
     top: 80px;
     right: 0;
