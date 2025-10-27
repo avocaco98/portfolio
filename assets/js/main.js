@@ -73,18 +73,39 @@ function initToTopBtn() {
 }
 
 // =========================
-// #contactリンク初期化（スムーズスクロール）
+// お問い合わせリンク（共通・PC/SP共通対応）
 // =========================
-function initContactLinks() {
-  $(document).on("click", 'a[href="#contact"]', function (e) {
-    e.preventDefault();
-    const $target = $("#contact");
-    if ($target.length) {
-      const position = $target.offset().top;
-      $("html, body").animate({ scrollTop: position }, 600);
-    }
-  });
-}
+$(document).on("click", 'a[href="#contact"]', function (e) {
+  e.preventDefault();
+
+  const $target = $("#contact");
+  if ($target.length) {
+    // SPメニューが開いている場合は閉じる
+    $(".sp-menu").removeClass("open");
+    $(".toggle-btn").removeClass("open");
+    $("body").removeClass("no-scroll");
+
+    // 同じページ内にスクロール
+    const position = $target.offset().top;
+    $("html, body").animate({ scrollTop: position }, 600);
+  }
+  // もし $target が存在しなければ何もしない
+});
+
+
+// // =========================
+// // #contactリンク初期化（スムーズスクロール）
+// // =========================
+// function initContactLinks() {
+//   $(document).on("click", 'a[href="#contact"]', function (e) {
+//     e.preventDefault();
+//     const $target = $("#contact");
+//     if ($target.length) {
+//       const position = $target.offset().top;
+//       $("html, body").animate({ scrollTop: position }, 600);
+//     }
+//   });
+// }
 
   
 //   // =========================
