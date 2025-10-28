@@ -19,18 +19,7 @@
   <link rel="stylesheet" href="../css/style.css">
 
   <!-- ファビコン -->
-  <script>
-    // ページ階層に応じてベースパスを決定
-    const depth = location.pathname.split("/").filter(Boolean).length;
-    const basePath = depth > 1 ? "../".repeat(depth - 1) : "./";
-
-    // ファビコンを動的に追加
-    const linkIcon = document.createElement("link");
-    linkIcon.rel = "icon";
-    linkIcon.type = "image/x-icon";
-    linkIcon.href = `${basePath}img/common/favicon.ico`;
-    document.head.appendChild(linkIcon);
-  </script>
+<link rel="icon" href="../img/common/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
